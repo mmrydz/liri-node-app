@@ -1,7 +1,7 @@
 // Read and set environment variables
 require("dotenv").config();
 
-var keys = require("./keys.js");
+spotify = new Spotify(dataKeys.spotify);
 
 // Takes in all of the command line arguments
 var inputString = process.argv;
@@ -42,25 +42,34 @@ if (command === "concert-this") {
 
 else if (command === "spotify-this-song") {
   // 2. `node liri.js spotify-this-song '<song name here>'`
-    var axios = require("axios");
-
-    var Spotify = require('node-spotify-api');
-    var spotify = new Spotify(keys.spotify);
-  spotify.search({ type: 'track', query: content }, function(err, data) {
+  var Spotify = require('node-spotify-api');
+  var keys = require("./keys.js");
+  var spotify = new Spotify(dataKeys.spotify);
+  // If there is no song name, set the song to The Sign by Ace of Base
+  if (!content) {
+      content = "The Sign";
+  }
+  spotify.search({ type: 'track', query: scontent }, function(err, data) {
     if (err) {
-      return console.log('Error occurred: ' + err);
-    }
-   
-    console.log(data); 
-    // * Artist(s)
-    // * The song's name
-    // * A preview link of the song from Spotify
-    // * The album that the song is from
-    // * If no song is provided then your program will default to "The Sign" by Ace of Base.
-  })
-}
+      console.log('Error occurred: ' + err);
+      return;
+      } else {
+        console.log("Artist: " + data.tracks.items[0].album.artists[0].name);
+        console.log("Song: " + content.toUpperCase());
+        console.log("Preview link of the song: " + data.tracks.items[0].album.external_urls.spotify);
+        console.log("Album it's on: " + data.tracks.items[0].album.name);
+        writeToLog("Artist: " + data.tracks.items[0].album.artists[0].name);
+        writeToLog("Song: " + content.toUpperCase());
+        writeToLog("Preview link of the song: " + data.tracks.items[0].album.external_urls.spotify);
+        writeToLog("Album it's on: " + data.tracks.items[0].album.name);
+      }
+    });
+    
+  }
 
-else if (command === "movie-this") {
+
+
+else if (command === "movie-this") {  
   // 3. `node liri.js movie-this '<movie name here>'`
   var axios = require("axios");
   if (!content) {
