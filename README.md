@@ -4,11 +4,13 @@
 
 ### Overview
 
-This is a week 5 full stack web development homework assignment including node.js, package.json, creating commands to run in the git bash command line, protecting api keys, and properly documenting the repo.  It is meant to pull together everything we've learned thus far regarding node.
-Why the project is useful
-How users can get started with the project
-Where users can get help with your project
-Who maintains and contributes to the project
+This is a week 5 full stack web development homework assignment including writing querys for APIs, juggling multiple commands, node.js, package.json, creating commands to run in the git bash command line, protecting api keys, and properly documenting the repo.  It is meant to pull together everything we've learned thus far regarding node.
+
+This app was written by Meg Rydzewski.
+
+
+
+Instructions for the assignment were as follows:
 
 In this assignment, you will make LIRI. LIRI is like iPhone's SIRI. However, while SIRI is a Speech Interpretation and Recognition Interface, LIRI is a _Language_ Interpretation and Recognition Interface. LIRI will be a command line node app that takes in parameters and gives you back data.
 

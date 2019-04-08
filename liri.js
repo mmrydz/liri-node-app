@@ -35,13 +35,11 @@ function writeToLog(output) {
   });
 }
 
-//  ===================== Arguments =============================//
-// Based on the command selected...
-// the content is put through the appropriate get/response/function:
+// ======================= And now: the 4 commands ===============================//
 
-// ====================== concert-this ========================== //
-if (command === "concert-this") {
-  // 1. `node liri.js concert-this <artist/band name here>`
+
+// ====================== 1. concert-this ========================== //
+function concert() {
   queryUrl = "https://rest.bandsintown.com/artists/" + content + "/events?app_id=codingbootcamp";
   axios.get(queryUrl).then(
   function(response) {
@@ -55,18 +53,16 @@ if (command === "concert-this") {
     "\n" + header +
     "\nArtist(s): " + content + 
     "\nVenue: " + response.data[i].venue.name + 
-    "\nVenue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.region + " " + response.data[i].venue.country;
+    "\nVenue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.region + " " + response.data[i].venue.country +
     "\nDate: " + convertedDate.format("MM/DD/YYYY");
+  };
     console.log(output);
-    }
     writeToLog(output);
   })
 }
-// ====================== spotify-this-song ========================== //
-
-else if (command === "spotify-this-song") {
-//   // 2. `node liri.js spotify-this-song '<song name here>'`
-//   // If there is no song name, set the song to The Sign by Ace of Base
+// ====================== 2. spotify-this-song ========================== //
+function SpotifyThisSong() {
+// If there is no song name, set the song to The Sign by Ace of Base
   if (!content) {
       content = "The Sign Ace of Base";
   }
@@ -86,11 +82,8 @@ else if (command === "spotify-this-song") {
       }
     });
 }
-
-// ====================== movie-this ========================== //
-
-else if (command === "movie-this") {  
-  // 3. `node liri.js movie-this '<movie name here>'`
+// ====================== 3. movie-this ========================== //
+function movieThis() {  
   if (!content) {
     content = "Mr Nobody";
     console.log("================= Liri says ==================");
@@ -113,30 +106,54 @@ else if (command === "movie-this") {
       console.log(output);
       writeToLog(output);     
       })
-      
     }
 
-// ====================== do-what-it-says ========================== //
-    
-else if (command === "do-what-it-says") {
-//   // 4. `node liri.js do-what-it-says`
-fs.readFile("random.txt", "utf8", function(error, data) {
-  spotify-this-song(data);
-});
+
+// ======== Here's where we call the commands based on the demand-line input =====//
+
+function liriSearch () {
+  if (command === "concert-this") {
+    concert();
+  } else if (command === "spotify-this-song") {
+    SpotifyThisSong();
+  } else if (command === "movie-this") {
+    movieThis();
+  } else if (command === "do-what-it-says") {
+    function doWhatItSays() { 
+    // ====================== 4. do-what-it-says included here due to scoping ========================== //
+  fs.readFile("random.txt", "utf8", function (error, data) {
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+        return console.log(error);
+    }
+  
+    // Put the data pulled from random.txt into a array and split the data to make it easier to read:
+    randomArray = data.split(",");
+  
+    // Captures the "command" at [0] (concert-this, spotify-this-song, movie-this, do-what-it-says) 
+    // and "content" at [1 ...](artist, song, movie, action):
+    var command = randomArray[0];
+    var content = randomArray[1];
+    console.log(command);
+    console.log(content);
+
+    function commandContent () {
+      if (command === "concert-this") {
+      concert(); 
+      } else if (command === "spotify-this-song") {
+      SpotifyThisSong();
+      } else if (command === "movie-this") {
+      movieThis();
+      } else {
+      console.log("============= Liri says ================");
+      console.log("I don't know what you want");
+      }
+    }
+    commandContent();
+  })
+  }
+   doWhatItSays();
+  }
 }
-
-
-//    * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
-
-//      * It should run `spotify-this-song` for "I Want it That Way," as follows the text in `random.txt`.
-
-//      * Edit the text in random.txt to test out the feature for movie-this and concert-this.
-
-// ### BONUS
-
-// * In addition to logging the data to your terminal/bash window, output the data to a .txt file called `log.txt`.
-
-// * Make sure you append each command you run to the `log.txt` file. 
-
-// * Do not overwrite your file each time you run a command.
-
+//  ======== Here's where we kick the whole thing off =====//
+liriSearch();
