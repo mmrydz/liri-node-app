@@ -121,6 +121,9 @@ function liriSearch () {
   } else if (command === "do-what-it-says") {
     function doWhatItSays() { 
     // ====================== 4. do-what-it-says included here due to scoping ========================== //
+    // This portion is not yet working properly - with the inital random.txt, it still references Ace of Base.
+    // I believe it is a scoping issue and will look further at it tomorrow before it is really due.
+    // Command and Content console.log correctly but then these vars are not passed through to the external functions.
   fs.readFile("random.txt", "utf8", function (error, data) {
     // If the code experiences any errors it will log the error to the console.
     if (error) {

@@ -8,6 +8,11 @@ This is a week 5 full stack web development homework assignment including writin
 
 This app was written by Meg Rydzewski.
 
+It is fully functional (per instructions below) except for the "tell-me-what-to-do" portion, which still pulls from Ace of Base. I think it's a scoping issue. Will look at it further on Tuesday before it's submitted.
+
+Here are links to screenshots taken of the functionality:
+
+
 
 
 Instructions for the assignment were as follows:
