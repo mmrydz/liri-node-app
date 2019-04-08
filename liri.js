@@ -1,10 +1,11 @@
 // Required elements
 require("dotenv").config();
-var dataKeys = require("./keys.js");
+var keys = require("./keys.js");
 var axios = require("axios");
 var fs = require('fs'); // in the node file system
+var moment = require('moment');
 var Spotify = require('node-spotify-api');
-var spotify = new Spotify(dataKeys.spotify);
+var spotify = new Spotify(keys.spotify);
 
 // Takes in all of the command line arguments
 var inputString = process.argv;
@@ -24,7 +25,6 @@ for (var i = 3; i < inputString.length; i++) {
   }
 }
 
-var newline = "\n";
 var header = "================= Liri says ==================";
 
 // Function that writes the output of each argument to log.txt
@@ -42,23 +42,26 @@ function writeToLog(output) {
 // ====================== concert-this ========================== //
 if (command === "concert-this") {
   // 1. `node liri.js concert-this <artist/band name here>`
-    queryUrl = "https://rest.bandsintown.com/artists/" + content + "/events?app_id=codingbootcamp";
-    console.log(queryUrl);
-    axios.get(queryUrl).then(
-    function(response) {
-      var output = 
-      newline + 
-      header +
-      newline + "Artist(s): " + content + 
-      newline + "Venue: " + response.VenueData.name + 
-      newline + "Venue Location: " + response.VenueData.city + "," + response.VenueData.region + "," + response.VenueData.country + 
-      newline + "Date: " + response.EventData.datetime;
-      console.log(output);
-      writeToLog(output);
-    //  * Date of the Event (use moment to format this as "MM/DD/YYYY") -- still need to do this ***
-    })
+  queryUrl = "https://rest.bandsintown.com/artists/" + content + "/events?app_id=codingbootcamp";
+  axios.get(queryUrl).then(
+  function(response) {
+    for (var i = 0; i < response.data.length; i++) {
+      var formattedDate = response.data[i].datetime.slice(0,10);
+      var randomDate = formattedDate;
+      var randomFormat = "YYYY/MM/DD";
+      var convertedDate = moment(randomDate, randomFormat);
+    
+    var output = 
+    "\n" + header +
+    "\nArtist(s): " + content + 
+    "\nVenue: " + response.data[i].venue.name + 
+    "\nVenue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.region + " " + response.data[i].venue.country;
+    "\nDate: " + convertedDate.format("MM/DD/YYYY");
+    console.log(output);
+    }
+    writeToLog(output);
+  })
 }
-
 // ====================== spotify-this-song ========================== //
 
 else if (command === "spotify-this-song") {
@@ -73,17 +76,16 @@ else if (command === "spotify-this-song") {
       return;
       } else {
         var output =
-        newline +
-        header +
-        newline + "Artist: " + data.tracks.items[0].album.artists[0].name + 
-        newline + "Song: " + content.toUpperCase() +  
-        newline + "Preview link of the song: " + data.tracks.items[0].album.external_urls.spotify +  
-        newline + "Album it's on: " + data.tracks.items[0].album.name;
+        "\n" + header +
+        "\nArtist: " + data.tracks.items[0].album.artists[0].name + 
+        "\nSong: " + content.toUpperCase() +  
+        "\nPreview link of the song: " + data.tracks.items[0].album.external_urls.spotify +  
+        "\nAlbum it's on: " + data.tracks.items[0].album.name;
         console.log(output);
         writeToLog(output);      
       }
     });
-  }
+}
 
 // ====================== movie-this ========================== //
 
@@ -100,15 +102,14 @@ else if (command === "movie-this") {
   axios.get(queryUrl).then(
     function(response) {
       var output =
-      newline + 
-      header +
-      newline + "Title: " + response.data.Title + 
-      newline + "IMDB Rating: " + response.data.imdbRating +
-      newline + "Rotten Tomatoes Rating: " + response.data.Ratings[1].Value +
-      newline + "Country where produced: " + response.data.Country +
-      newline + "Language: " + response.data.Language +
-      newline + "Plot: " + response.data.Plot +
-      newline + "Actors: " + response.data.Actors;
+      "\n" + header +
+      "\nTitle: " + response.data.Title + 
+      "\nIMDB Rating: " + response.data.imdbRating +
+      "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value +
+      "\nCountry where produced: " + response.data.Country +
+      "\nLanguage: " + response.data.Language +
+      "\nPlot: " + response.data.Plot +
+      "\n" + "Actors: " + response.data.Actors;
       console.log(output);
       writeToLog(output);     
       })
