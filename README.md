@@ -10,9 +10,8 @@ This app was written by Meg Rydzewski.
 
 It is fully functional (per instructions below) except for the "tell-me-what-to-do" portion, which still pulls from Ace of Base. I think it's a scoping issue. Will look at it further on Tuesday before it's submitted.
 
-Here are links to screenshots taken of the functionality:
-
-
+Here is a link to screenshots taken of the functionality:
+https://drive.google.com/drive/folders/1U6ZQiOA2OyCUF4pYpoCmY7JsXMkzl5Ie?usp=sharing
 
 
 Instructions for the assignment were as follows:
