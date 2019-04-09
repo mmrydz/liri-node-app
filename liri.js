@@ -7,6 +7,12 @@ var moment = require('moment');
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 
+// Commands to run LIRI
+// node liri.js concert-this <artist>
+// node liri.js spotify-this-song <song name>
+// node liri.js movie-this <movie name>
+// node liri.js do-what-it-says
+
 // Takes in all of the command line arguments
 var inputString = process.argv;
 
@@ -14,6 +20,7 @@ var inputString = process.argv;
 // and "content" at [3 ...](artist, song, movie, action):
 var command = inputString[2];
 var content = "";
+
 // Because most of our queries will be more than one word, we combine everything after [2] into one var:
 for (var i = 3; i < inputString.length; i++) {
 
@@ -109,43 +116,25 @@ function movieThis() {
     }
 // // ====================== 4. do-what-it-says included here due to scoping ========================== //
 //   // This portion is not yet working properly - with the inital random.txt, it still references Ace of Base.
-//   // I believe it is a scoping issue and will look further at it tomorrow before it is really due.
-//   // Command and Content console.log correctly but then these vars are not passed through to the external functions.
+//   // Command and Content console.log correctly but then these new vars are not passed through to the external functions.
+//  // I tried using liriSearch(); but then logged a never-ending return of the random.txt vars, so had to toggle line that out
   function doWhatItSays() {
   fs.readFile("random.txt", "utf8", function (error, data) {
     // If the code experiences any errors it will log the error to the console.
     if (error) {
       return console.log(error);
     }
-    
     // Put the data pulled from random.txt into a array and split the data to make it easier to read:
     randomArray = data.split(",");
-    
     // Captures the "command" at [0] (concert-this, spotify-this-song, movie-this, do-what-it-says) 
     // and "content" at [1 ...](artist, song, movie, action):
     var command = randomArray[0];
     var content = randomArray[1];
     console.log(command);
     console.log(content);
-    liriSearch();
-
-//     // function commandContent () {
-//     //   if (command === "concert-this") {
-//     //   concert(); 
-//     //   } else if (command === "spotify-this-song") {
-//     //   SpotifyThisSong();
-//     //   } else if (command === "movie-this") {
-//     //   movieThis();
-//     //   } else {
-//     //   console.log("============= Liri says ================");
-//     //   console.log("I don't know what you want");
-//     //   }
-//     //   }
-//     //   commandContent();
-//     })
+    // liriSearch();
   })
-//   doWhatItSays();
-  }
+}
 
 // ======== Here's where we call the commands based on the demand-line input =====//
 
